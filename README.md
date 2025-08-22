@@ -26,7 +26,7 @@
 
 ---
 
-**Git Hubcraft** is a comprehensive learning resource designed to help you **master Git and GitHub** — from the fundamentals of version control to advanced collaboration workflows, history rewriting, and automation with GitHub Actions.
+**Git Hubcraft** is a comprehensive learning resource designed to help you **master Git and GitHub** from the fundamentals of version control to advanced collaboration workflows, history rewriting, and automation with GitHub Actions.
 
 Whether you’re a beginner learning the basics or a professional developer refining your workflow, **Git Hubcraft** equips you with the knowledge to craft efficient, reliable, and scalable version control practices.
 
@@ -34,12 +34,12 @@ Whether you’re a beginner learning the basics or a professional developer refi
 
 ## 📚 What You’ll Learn
 
-- **Git Fundamentals** — installation, setup, configuration, and essential commands.
-- **Branching & Merging** — branch strategies, merge workflows, rebasing, and conflict resolution.
-- **GitHub Collaboration** — pull requests, code reviews, branching models, and team best practices.
-- **Advanced Git** — reflog, reset, bisect, cherry-pick, submodules, and hooks.
-- **Git Internals** — how Git stores data: objects, refs, trees, and packfiles.
-- **Automation** — CI/CD workflows with GitHub Actions.
+* **Git Fundamentals**: installation, setup, configuration, and essential commands.
+* **Branching & Merging**: branch strategies, merge workflows, rebasing, and conflict resolution.
+* **GitHub Collaboration**: pull requests, code reviews, branching models, and team best practices.
+* **Advanced Git**: reflog, reset, bisect, cherry-pick, submodules, and hooks.
+* **Git Internals**: how Git stores data: objects, refs, trees, and packfiles.
+* **Automation**: CI/CD workflows with GitHub Actions.
 
 ---
 
