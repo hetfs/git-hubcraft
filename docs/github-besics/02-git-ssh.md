@@ -181,6 +181,81 @@ git remote -v
 # origin  git@github.com:USERNAME/REPO.git (push)
 ```
 
+
+<details>
+<summary>🔄 Example: Change Git Remote URL from HTTPS to SSH</summary>
+
+To switch from HTTPS to SSH, you’ll need to update the `origin` remote URL in your repository.
+
+---
+
+## 1️⃣ Check Your Current Remote URL
+Run:
+```bash
+git remote -v
+````
+
+Example output:
+
+```
+origin  https://github.com/hetfs/CrossOS.git (fetch)
+origin  https://github.com/hetfs/CrossOS.git (push)
+```
+
+---
+
+## 2️⃣ Update the Remote URL to SSH
+
+Use the SSH format: `git@github.com:username/repository.git`.
+
+```bash
+git remote set-url origin git@github.com:hetfs/CrossOS.git
+```
+
+---
+
+## 3️⃣ Verify the Change
+
+Run again:
+
+```bash
+git remote -v
+```
+
+Now you should see:
+
+```
+origin  git@github.com:hetfs/CrossOS.git (fetch)
+origin  git@github.com:hetfs/CrossOS.git (push)
+```
+
+---
+
+## ✅ Step 5: Test Your SSH Connection
+
+Make sure authentication works:
+
+```bash
+ssh -T git@github.com
+```
+
+Expected message:
+
+```
+Hi hetfs! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+This confirms your SSH setup is working correctly.
+
+---
+
+## 🎉 All Set!
+
+From now on, `git push` will use SSH instead of HTTPS.
+If your key has a passphrase, you’ll be prompted the first time. Most systems can remember it via your OS keychain or SSH agent.
+
+</details>
+
 ---
 
 ## ⚙️ SSH Config File
@@ -196,7 +271,7 @@ Host github.com
   IdentitiesOnly yes
 ```
 
-### Multiple accounts
+## Multiple accounts
 
 ```sshconfig
 Host github.com-personal
@@ -254,43 +329,6 @@ git config --global user.email "12345678+youruser@users.noreply.github.com"
 ```
 
 Enable in **GitHub → Settings → Emails → Keep my email address private**.
-
----
-
-## 🤖 Automating with Ansible
-
-Requirements:
-
-* PAT with `admin:public_key` scope
-* Install: `ansible-galaxy collection install community.general`
-
-Example playbook:
-
-```yaml
-- name: Upload SSH key to GitHub
-  hosts: localhost
-  vars:
-    github_token: "{{ lookup('env', 'GITHUB_TOKEN') }}"
-    github_key_title: "Dev Laptop ({{ ansible_hostname }})"
-  tasks:
-    - name: Ensure SSH key exists
-      community.crypto.openssh_keypair:
-        path: ~/.ssh/id_ed25519
-        type: ed25519
-        comment: "{{ ansible_user }}@github"
-    - name: Upload key
-      community.general.github_key:
-        token: "{{ github_token }}"
-        title: "{{ github_key_title }}"
-        pubkey: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
-```
-
-Run:
-
-```bash
-export GITHUB_TOKEN=your_token_here
-ansible-playbook deploy-key.yml
-```
 
 ---
 
