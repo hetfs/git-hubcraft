@@ -7,7 +7,7 @@ sidebar_position: 4
 # Getting Started
 
 **Git-Hubcraft** is your hands-on guide to mastering **Git** and **GitHub**.
-This page walks you through installing Git and configuring your environment for the first time.
+This page walks you through installing Git, configuring your environment, and fixing common setup issues.
 
 ---
 
@@ -20,7 +20,7 @@ Before you begin, make sure you have:
 * A code editor (e.g., [VS Code](https://code.visualstudio.com/))
 * Basic command-line knowledge (helpful, but not required)
 
-Check your installed Git version:
+Check your Git version:
 
 ```bash
 git --version
@@ -75,7 +75,7 @@ git config --global color.ui auto
 git config --global push.default simple
 ```
 
-Check your setup:
+Check your configuration:
 
 ```bash
 git config --list
@@ -83,12 +83,12 @@ git config --list
 
 ---
 
-## 🛠️ Git Pager Errors (`less`, nvim, and VS Code)
+## 🛠️ Git Pager Errors (`less`, Neovim, VS Code)
 
 <details>
 <summary>Click to expand</summary>
 
-## ❌ The Problem
+### ❌ Problem
 
 You might see:
 
@@ -97,11 +97,11 @@ error: cannot run less: No such file or directory
 fatal: unable to execute pager 'less'
 ```
 
-👉 Git is trying to use **`less`** as its pager (for commands like `git log`, `git diff`), but it isn’t installed.
+Git defaults to **`less`** as its pager (for commands like `git log`, `git diff`). If `less` is missing, you’ll get errors.
 
 ---
 
-## ✅ Solutions
+### ✅ Solutions
 
 **Option 1: Install `less` (recommended)**
 
@@ -116,8 +116,7 @@ sudo pacman -S less
 brew install less
 ```
 
-Windows (Git for Windows) already includes `less.exe`.
-If missing, reinstall Git or install via MSYS2.
+Windows Git already includes `less.exe`. If missing, reinstall Git or use MSYS2.
 
 ---
 
@@ -142,11 +141,9 @@ git --no-pager log
 
 ---
 
-## ℹ️ What is `less`?
+### ℹ️ What is `less`?
 
-`less` is a **terminal pager** that makes long output scrollable.
-
-Example:
+A **terminal pager** that makes long output scrollable.
 
 ```bash
 cat /etc/services    # dumps everything
@@ -155,13 +152,13 @@ less /etc/services   # scrollable + searchable
 
 Inside `less`:
 
-* Arrow keys / PgUp / PgDn → scroll
+* Arrows / PgUp / PgDn → scroll
 * `/pattern` → search
 * `q` → quit
 
 ---
 
-## 🔧 Using Neovim as Pager
+### 🔧 Neovim as Pager
 
 ```bash
 git config --global core.pager "nvim -R"
@@ -178,28 +175,28 @@ git config --global pager.diff "nvim -R"
 git config --global pager.show "nvim -R"
 ```
 
-⚠️ Avoid in CI/CD scripts → use `--no-pager`.
+⚠️ Avoid in CI/CD → use `--no-pager`.
 
 ---
 
-## 🖊️ VS Code as Editor (recommended)
+### 🖊️ VS Code as Editor (recommended)
 
 ```bash
 git config --global core.editor "code --wait"
 ```
 
 * Opens commit messages in VS Code
-* `--wait` ensures Git pauses until you close the file
+* `--wait` makes Git pause until you close the file
 
 ---
 
-## 📜 VS Code as Pager (not ideal)
+### 📜 VS Code as Pager (not ideal)
 
 ```bash
 git config --global core.pager "code --wait -"
 ```
 
-* Opens diffs/logs in new VS Code tabs
+* Opens diffs/logs in VS Code tabs
 * Disrupts terminal flow, slower than `less`/`nvim`
 
 👉 Best practice:
@@ -207,7 +204,7 @@ Use **VS Code as editor**, and **`less`, `nvim -R`, or `delta`** as pager.
 
 ---
 
-## 🚀 Recommended Setup
+### 🚀 Recommended Setup
 
 ```bash
 # Use VS Code as editor
@@ -221,48 +218,71 @@ git config --global core.pager delta
 
 ---
 
-## ✅ TL;DR
+### ✅ TL;DR
 
 * Install **`less`** to fix pager errors
-* On Windows → already included with Git
+* Windows → already included
 * Alternatives:
 
   * `nvim -R` → Neovim as pager
   * `delta` → modern diff viewer
-* **VS Code** → Best as **editor**, not pager
+* **VS Code** → best as **editor**, not pager
 
 </details>
 
 ---
 
-## 🎨 Git Delta: Modern Git Pager
+## 🎨 Git Delta: Modern Pager
 
-[**git-delta**](https://github.com/dandavison/delta) (aka **delta**) is a modern, syntax-highlighting pager for Git.
-It makes diffs, logs, and blame output easy to read, with colors and side-by-side views.
+[**Delta**](https://github.com/dandavison/delta) is a syntax-highlighting pager for Git.
+It makes diffs, logs, and blame output much easier to read.
 
 ---
 
-## 🔧 Installation
+## 🖥️ Common Git Commands with Delta
 
 ```bash
-# macOS
-brew install git-delta
-
-# Ubuntu/Debian
-sudo apt install git-delta
-
-# Arch Linux
-sudo pacman -S git-delta
-
-# Windows
-winget install -e --id dandavison.delta
+git diff
+# Shows changes in your working directory that haven't been staged yet
+# Delta makes this output syntax-highlighted and easier to read
 ```
 
-Or grab binaries from the [releases page](https://github.com/dandavison/delta/releases).
+```bash
+git show
+# Displays details of the most recent commit (or a specific commit if provided)
+# Includes commit message + diff, beautifully styled with Delta
+```
+
+```bash
+git log -p
+# Shows commit history along with the patch (diff) for each commit
+# Delta highlights changes and makes long logs much more readable
+```
+
+```bash
+git stash show -p
+# Shows what was saved in your most recent stash (the -p includes the diff)
+# Delta formats the diff so you can quickly review stashed changes
+```
+
+👉 With Delta, all of these commands produce **colorized, syntax-highlighted, and structured diffs** instead of the plain default Git output.
+
+➡️ Works automatically once set as `core.pager`.
 
 ---
 
-## ⚙️ Basic Git Config
+## ⚡ Temporary Overrides
+
+Disable or adjust options per command with `git -c`.
+Example: show a commit without line numbers:
+
+```bash
+git -c delta.line-numbers=false show
+```
+
+---
+
+## ⚙️ Basic Config
 
 ```bash
 git config --global core.pager delta
@@ -321,19 +341,6 @@ git config --global delta.syntax-theme "Dracula"
 
 ---
 
-## 🖥️ Usage
-
-```bash
-git diff             # syntax-highlighted diff
-git show HEAD~1      # show commit with diff
-git log -p           # logs with diffs
-git blame -L 10,20 file.py  # blame with color
-```
-
-➡️ Delta runs automatically if set as `core.pager`.
-
----
-
 ## ⌨️ Navigation Keys (with `navigate = true`)
 
 | Key   | Action              |
@@ -347,13 +354,13 @@ git blame -L 10,20 file.py  # blame with color
 
 ## 🎭 Themes
 
-List all available syntax themes:
+List available syntax themes:
 
 ```bash
 delta --show-syntax-themes
 ```
 
-Apply a theme temporarily:
+Apply one temporarily:
 
 ```bash
 git diff --syntax-theme="Dracula"
@@ -361,14 +368,14 @@ git diff --syntax-theme="Dracula"
 
 ---
 
-## 🔹 Notes for Editors
+## 🖥️ Editor Notes
 
-* **VS Code** → Delta works inside the integrated terminal
-* **Neovim** → Works beautifully with `fugitive` or `lazygit.nvim`
+* **VS Code** → Delta works in the integrated terminal
+* **Neovim** → Great with `fugitive` or `lazygit.nvim`
 
-✅ Use **delta for diffs in terminal**, and VS Code/Neovim for editing.
+👉 Use **Delta for diffs in terminal**, and **VS Code/Neovim for editing**.
 
 ---
 
-👉 With **delta + VS Code/Neovim**, you get the best of both worlds:
-**clean diffs in terminal + full editor power when needed.**
+✅ With **Delta + your favorite editor**, you get the best of both worlds:
+**clean diffs in the terminal + powerful editing when needed.**
