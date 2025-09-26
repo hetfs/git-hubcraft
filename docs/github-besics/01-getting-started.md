@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # Getting Started
 
-**Git-Hubcraft** is your hands-on guide to mastering **Git** and **GitHub**.
+**Git-Hubcraft** is your hands-on guide to mastering **Git** and **GitHub**.  
 This page walks you through installing Git, configuring your environment, and fixing common setup issues.
 
 ---
@@ -62,9 +62,9 @@ winget install -e --id Git.Git
 Run these once (replace with your details):
 
 ```bash
-git config --global core.editor nvim     # or "code --wait"
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
+git config --global core.editor nvim     # or "code --wait" for VS Code
 ```
 
 👉 Recommended defaults:
@@ -83,25 +83,39 @@ git config --list
 
 ---
 
-## 🛠️ Git Pager Errors (`less`, Neovim, VS Code)
+### 📌 Pager Error Example
 
-<details>
-<summary>Click to expand</summary>
-
-### ❌ Problem
-
-You might see:
+If `less` is missing, Git shows:
 
 ```
 error: cannot run less: No such file or directory
 fatal: unable to execute pager 'less'
 ```
 
-Git defaults to **`less`** as its pager (for commands like `git log`, `git diff`). If `less` is missing, you’ll get errors.
+Git defaults to **`less`** for commands like `git log` and `git diff`.
 
 ---
 
-### ✅ Solutions
+## 📜 Common Pagers
+
+A **pager** lets you view long command output one screen at a time.
+Git, `man`, and other tools rely on pagers for readability.
+
+Here are the most common pagers (with **Delta recommended** for Git):
+
+---
+
+### 🔹 **less**
+
+* The **standard pager**, used by Git, `man`, and most Unix tools.
+* Supports **scrolling forward/backward** and **searching** (`/pattern`).
+* Lightweight, fast, and available almost everywhere.
+* Likely the pager you’re already using.
+
+👉 Best for: reliable, general-purpose paging with search.
+
+<details>
+<summary>less configuration</summary>
 
 **Option 1: Install `less` (recommended)**
 
@@ -139,150 +153,112 @@ git config --global core.pager cat
 git --no-pager log
 ```
 
----
-
-### ℹ️ What is `less`?
-
-A **terminal pager** that makes long output scrollable.
-
-```bash
-cat /etc/services    # dumps everything
-less /etc/services   # scrollable + searchable
-```
-
-Inside `less`:
-
-* Arrows / PgUp / PgDn → scroll
-* `/pattern` → search
-* `q` → quit
-
----
-
-### 🔧 Neovim as Pager
-
-```bash
-git config --global core.pager "nvim -R"
-```
-
-* `-R` opens Neovim in read-only mode.
-* Quit with `:q`.
-
-Per-command setup:
-
-```bash
-git config --global pager.log "nvim -R"
-git config --global pager.diff "nvim -R"
-git config --global pager.show "nvim -R"
-```
-
-⚠️ Avoid in CI/CD → use `--no-pager`.
-
----
-
-### 🖊️ VS Code as Editor (recommended)
-
-```bash
-git config --global core.editor "code --wait"
-```
-
-* Opens commit messages in VS Code
-* `--wait` makes Git pause until you close the file
-
----
-
-### 📜 VS Code as Pager (not ideal)
-
-```bash
-git config --global core.pager "code --wait -"
-```
-
-* Opens diffs/logs in VS Code tabs
-* Disrupts terminal flow, slower than `less`/`nvim`
-
-👉 Best practice:
-Use **VS Code as editor**, and **`less`, `nvim -R`, or `delta`** as pager.
-
----
-
-### 🚀 Recommended Setup
-
-```bash
-# Use VS Code as editor
-git config --global core.editor "code --wait"
-
-# Use delta as pager (modern + pretty)
-git config --global core.pager delta
-```
-
-👉 [`delta`](https://github.com/dandavison/delta) = modern Git pager with syntax highlighting and side-by-side diffs.
-
----
-
-### ✅ TL;DR
-
-* Install **`less`** to fix pager errors
-* Windows → already included
-* Alternatives:
-
-  * `nvim -R` → Neovim as pager
-  * `delta` → modern diff viewer
-* **VS Code** → best as **editor**, not pager
-
 </details>
 
 ---
 
-## 🎨 Git Delta: Modern Pager
+### 🔹 **more**
 
-[**Delta**](https://github.com/dandavison/delta) is a syntax-highlighting pager for Git.
+* The **oldest and simplest pager**.
+* Only allows **forward scrolling**, one page at a time.
+* No search or backward navigation.
+* Very lightweight but limited.
+
+👉 Best for: minimal systems with only basic paging needs.
+
+**Install `more`:**
+
+```bash
+# Debian/Ubuntu
+sudo apt install more
+
+# Arch Linux
+sudo pacman -S util-linux
+
+# macOS
+# Already included with macOS
+```
+
+---
+
+### 🔹 **most**
+
+* An **enhanced `more`** with extras.
+* Adds **backscrolling**, **color support**, and better multi-file handling.
+* Less common but available on many Linux distros.
+
+👉 Best for: users who want colors + backscroll without the full complexity of `less`.
+
+**Install `most`:**
+
+```bash
+# Debian/Ubuntu
+sudo apt install most
+
+# Arch Linux
+sudo pacman -S most
+
+# macOS (Homebrew)
+brew install most
+```
+
+---
+
+### 🔹 **bat**
+
+* A **pager + syntax highlighter**.
+* Shows files/diffs with **highlighting, line numbers, and Git integration**.
+* Popular as a modern `cat` replacement.
+* Great for previewing code directly in the terminal.
+
+👉 Best for: developers who want clean, highlighted file/diff previews.
+
+🔗 [bat on GitHub](https://github.com/sharkdp/bat)
+
+**Install `bat`:**
+
+```bash
+# Debian/Ubuntu
+sudo apt install bat
+
+# Arch Linux
+sudo pacman -S bat
+
+# macOS (Homebrew)
+brew install bat
+```
+
+Note: On Debian/Ubuntu, `bat` may install as `batcat`.
+
+---
+
+### 🔹 **delta**
+
+[**Delta**](https://github.com/dandavison/delta) is a **modern pager built for Git**.
 It makes diffs, logs, and blame output much easier to read.
 
----
+* Adds **syntax highlighting**, **line numbers**, and **side-by-side diffs**.
+* Great for `git diff` and `git log -p`.
+* Highly configurable — navigate hunks with `n` / `N`.
 
-## 🖥️ Common Git Commands with Delta
+👉 Best for: developers who live in Git and want beautiful, readable diffs.
 
-```bash
-git diff
-# Shows changes in your working directory that haven't been staged yet
-# Delta makes this output syntax-highlighted and easier to read
-```
+**Install `delta`:**
 
 ```bash
-git show
-# Displays details of the most recent commit (or a specific commit if provided)
-# Includes commit message + diff, beautifully styled with Delta
-```
+# Debian/Ubuntu
+sudo apt install git-delta
 
-```bash
-git log -p
-# Shows commit history along with the patch (diff) for each commit
-# Delta highlights changes and makes long logs much more readable
-```
+# Arch Linux
+sudo pacman -S git-delta
 
-```bash
-git stash show -p
-# Shows what was saved in your most recent stash (the -p includes the diff)
-# Delta formats the diff so you can quickly review stashed changes
-```
-
-👉 With Delta, all of these commands produce **colorized, syntax-highlighted, and structured diffs** instead of the plain default Git output.
-
-➡️ Works automatically once set as `core.pager`.
-
----
-
-## ⚡ Temporary Overrides
-
-Disable or adjust options per command with `git -c`.
-Example: show a commit without line numbers:
-
-```bash
-git -c delta.line-numbers=false show
+# macOS (Homebrew)
+brew install git-delta
 ```
 
 ---
 
-## ⚙️ Basic Config
+## ⚙️ Delta Config
 
 ```bash
 git config --global core.pager delta
@@ -294,49 +270,30 @@ git config --global delta.syntax-theme "Dracula"
 
 ---
 
-## 🎨 Example `~/.gitconfig`
+## ⚡ Temporary Overrides
 
-```ini
-[core]
-    editor = nvim             # Use Neovim for commits/rebases
-    pager = delta             # Use delta for diff/log output
+Adjust options per command with `git -c`.
 
-[user]
-    name = "your name         # Your Git username
-    email = "your email"      # Your Git email (use noreply for privacy)
+Example: disable line numbers for one commit:
 
-[interactive]
-    diffFilter = delta --color-only
+```bash
+git -c delta.line-numbers=false show
+```
 
-[delta]
-    navigate = true             # n/N to move between hunks
-    line-numbers = true         # Show line numbers
-    side-by-side = true         # VS Code-style split diffs
-    syntax-theme = "Dracula"    # Other options: OneHalfDark, Solarized, GitHub
-    decorations = true
-    hyperlinks = true
-    dark = true
+---
 
-[merge]
-    conflictStyle = zdiff3      # Improved merge conflict markers
+## 🎭 Themes
 
-[diff]
-    colorMoved = default        # Highlight moved lines
+List themes:
 
-[init]
-    defaultBranch = main
+```bash
+delta --show-syntax-themes
+```
 
-[color]
-    ui = auto
+Apply one temporarily:
 
-[push]
-    default = simple
-
-[pager]
-    diff = delta
-    log = delta
-    reflog = delta
-    show = delta
+```bash
+git diff --syntax-theme="Dracula"
 ```
 
 ---
@@ -352,30 +309,31 @@ git config --global delta.syntax-theme "Dracula"
 
 ---
 
-## 🎭 Themes
-
-List available syntax themes:
+## 🖥️ Common Git Commands with Delta
 
 ```bash
-delta --show-syntax-themes
+git diff
+# Shows unstaged changes (highlighted by Delta)
 ```
-
-Apply one temporarily:
 
 ```bash
-git diff --syntax-theme="Dracula"
+git show
+# Displays details of the most recent commit with syntax-highlighted diff
 ```
+
+```bash
+git log -p
+# Commit history with patch diffs, highlighted and styled
+```
+
+```bash
+git stash show -p
+# Shows saved stash diff in a clean, readable format
+```
+
+👉 With **Delta enabled as `core.pager`**, all Git diffs become colorized, structured, and easy to read.
 
 ---
 
-## 🖥️ Editor Notes
-
-* **VS Code** → Delta works in the integrated terminal
-* **Neovim** → Great with `fugitive` or `lazygit.nvim`
-
-👉 Use **Delta for diffs in terminal**, and **VS Code/Neovim for editing**.
-
----
-
-✅ With **Delta + your favorite editor**, you get the best of both worlds:
-**clean diffs in the terminal + powerful editing when needed.**
+✅ With **Delta + your editor**, you get the best of both worlds:
+**beautiful diffs in the terminal + powerful editing when needed.**
