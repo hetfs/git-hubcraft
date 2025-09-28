@@ -1,6 +1,6 @@
 ---
 id: 04-git-config-bootstrap
-title: Git Configuration Bootstrap Scripts
+title: Git Config Bootstrap Scripts
 sidebar_position: 6
 ---
 
@@ -35,7 +35,10 @@ Suitable for both beginners and experienced developers.
 #### **Method 1: One-Line Online Install (Quickest)**
 
 ```bash
-curl -s https://raw.githubusercontent.com/hetfs/git-hubcraft/main/scripts/git-config.sh | bash
+curl -s -O https://raw.githubusercontent.com/hetfs/git-hubcraft/main/scripts/git-config.sh
+cat git-config.sh   # 👀 review before running
+chmod +x git-config.sh
+./git-config.sh
 ````
 
 #### **Method 2: Download & Run Locally (Safer)**
