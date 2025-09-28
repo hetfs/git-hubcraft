@@ -352,14 +352,14 @@ configure_aliases() {
 
   # Commit operations
   git_config --global alias.c "commit"
+  git_config --global alias.cm "commit --message"
   git_config --global alias.ca "commit --amend"
+  git_config --global alias.ci "commit --interactive"
   git_config --global alias.cam "commit --amend --message"
   git_config --global alias.cane "commit --amend --no-edit"
   git_config --global alias.caa "commit --amend --all"
   git_config --global alias.caam "commit --amend --all --message"
   git_config --global alias.caane "commit --amend --all --no-edit"
-  git_config --global alias.ci "commit --interactive"
-  git_config --global alias.cm "commit --message"
 
   # Checkout operations
   git_config --global alias.co "checkout"
@@ -685,11 +685,14 @@ main() {
   log_info "Try these useful aliases:"
   echo "  git s          # Compact status"
   echo "  git lg         # Graph log"
+  echo "  git ll         # Graph log"
   echo "  git d filename # View changes"
   echo "  git co -b feat/new-feature # Create new branch"
+  echo "  git cm         # commit -m"
   echo "  git ca         # Amend last commit"
   echo "  git wip        # Save work in progress"
   echo "  git uncommit   # Soft reset last commit"
+  echo "  git a          # Add changes"
   echo "  git aa         # Add all changes"
   echo "  git cp         # Cherry-pick commits"
   echo "  git rb         # Interactive rebase"

@@ -1,294 +1,383 @@
 ---
-id: 03-git-aliase
+id: 03-git-aliases
 title: Git Aliases
 sidebar_position: 6
 ---
 
 # ⚡ Git Aliases
 
-Git aliases are **shortcuts** that replace long Git commands with shorter ones, making your workflow faster and easier. Instead of typing the full command every time, you define a quick alias that Git will expand automatically.
+Git aliases are **custom shortcuts** that replace long Git commands with memorable abbreviations, making your workflow faster and more efficient. Instead of typing verbose commands repeatedly, you define simple aliases that Git expands automatically.
 
 ---
 
-## 🔎 How Git Aliases Work
+## 🎯 Why Use Git Aliases?
+
+* **Save time** - Fewer keystrokes for common operations
+* **Reduce errors** - Consistent commands across projects
+* **Customize workflow** - Tailor Git to your preferences
+* **Improve productivity** - Focus on coding, not remembering commands
+
+---
+
+## 🔧 How Git Aliases Work
 
 When you type a Git command:
 
-1. Git first checks if it’s a built-in command.
-2. If not, it looks for a matching alias in your Git configuration.
-3. If an alias exists, Git replaces it with the command you defined.
+1. **Git checks** if it's a built-in command
+2. **If not found**, searches for matching aliases in your configuration
+3. **If alias exists**, expands it to the full command
+4. **Executes** the expanded command
 
-This means you can customize Git to match **your personal workflow**.
-
----
-
-## 🗂️ Types of Git Aliases
-
-* **Local aliases** → apply only to the current repository
-
-  * stored in `.git/config` inside the repo
-
-* **Global aliases** → apply to all repositories for your user
-
-  * stored in `~/.gitconfig`
+This transparent expansion means aliases work exactly like native Git commands.
 
 ---
 
-## 📝 Setting Your Preferred Git Editor
+## 📍 Alias Scope
 
-Git lets you choose which editor to use when it needs you to write a commit message or edit your configuration. You can set **any editor** (Notepad, VS Code, Vim, Nano, etc.) as the default.
+### Local Aliases
+* **Scope**: Current repository only
+* **Location**: `.git/config` within the repository
+* **Use case**: Project-specific workflows
+
+### Global Aliases  
+* **Scope**: All repositories for your user
+* **Location**: `~/.gitconfig` (user home directory)
+* **Use case**: Personal workflow preferences (recommended)
 
 ---
 
-## ⚙️ Configure Your Editor
+## ⚙️ Setting Your Git Editor
 
-### neovim
+Before creating aliases, configure your preferred editor for commit messages and configuration edits:
+
+### Popular Editor Options
 
 ```bash title="Terminal"
+# Neovim
 git config --global core.editor "nvim"
-```
 
-### VS Code
-
-```bash title="Terminal"
+# VS Code
 git config --global core.editor "code --wait"
+
+# Vim
+git config --global core.editor "vim"
+
+# Nano
+git config --global core.editor "nano"
+
+# Sublime Text
+git config --global core.editor "subl -w"
 ```
 
-> The `--wait` flag makes Git pause until you finish editing and close the editor.
-
-🔎 Want a different editor? Just search **“Set {editor} as default Git editor”** and replace `{editor}` with your choice (e.g., `nano`, `vim`, `subl`).
+> **Note**: The `--wait` flag tells Git to pause until you close the editor, ensuring your message is saved.
 
 ---
 
-## 📂 Opening the Git Config File
+## 📂 Accessing Git Configuration
 
-To edit your global Git configuration file directly, run:
-
+### Open Config File
 ```bash title="Terminal"
 git config --global -e
 ```
+Opens your global Git configuration in the default editor.
 
-This opens `~/.gitconfig` (or its platform equivalent) in your configured editor.
+### Config File Locations
+* **macOS/Linux**: `~/.gitconfig` 
+* **Windows**: `C:\Users\<Username>\.gitconfig`
 
-### File Locations
-
-* **macOS** → `~/.gitconfig` (Home → show hidden files with `Cmd + Shift + .`)
-* **Linux** → `~/.gitconfig` (Home → show hidden files with `Ctrl + H`)
-* **Windows** → `C:\Users\<YourUsername>\.gitconfig` (enable hidden files in Explorer)
-
----
-
-## 🚀 Adding Git Aliases via Config File
-
-Aliases let you shorten common Git commands. To add them manually:
-
-1. Open your `.gitconfig` file.
-2. Add a new `[alias]` section (if it doesn’t exist).
-3. Define your shortcuts in the format:
-
-```ini title="~/.gitconfig"
-[alias]
-  co = checkout
-  cob = checkout -b
-```
-
----
-
-### ✅ Example Usage
-
-* `git co main` → runs `git checkout main`
-* `git cob feature/123` → runs `git checkout -b feature/123`
-
-> You don’t need to type `git` in the alias definition — Git automatically knows it’s a Git command.
-
----
-
-## ⚡ Notes
-
-* Any arguments you pass go straight to the underlying command.
-* You can add as many aliases as you like.
-* Save and close the file — the aliases will be available immediately in your terminal.
-
----
-
-Do you want me to **combine this editor setup doc with your alias doc** into one single **“Git Configuration Guide”** for Docusaurus (so readers see both editors + aliases in one place), or keep them as separate pages?
-## ⚙️ Add Aliases in the CLI
-
-If you want a more streamlined approach to adding Git aliases, you can add them directly from within the terminal/command line.
-
-You create aliases using the `git config` command:
-
-```bash title="Terminal"
-git config [--global] alias.<alias_name> "<command>"
-```
-
-* Replace `<alias_name>` with the shortcut name.
-* Replace `<command>` with the Git command you want to run.
-* Use `--global` if you want the alias to work across all repositories.
-
----
-
-## 🛠️ Examples
-
-### ✅ Status
-
-```bash title="Terminal"
-git config --global alias.st "status"
-```
-
-Now you can run:
-
-```bash
-git st
-```
-
----
-
-### ✅ Branches
-
-```bash title="Terminal"
-git config --global alias.br "branch"
-```
-
-Usage:
-
-```bash
-git br
-```
-
----
-
-### ✅ Pretty Logs
-
-```bash title="Terminal"
-git config --global alias.lg "log --oneline --graph --decorate"
-```
-
-Usage:
-
-```bash
-git lg
-```
-
----
-
-## 📋 Listing All Aliases
-
-To view all the aliases you’ve defined:
-
+### View Current Aliases
 ```bash title="Terminal"
 git config --get-regexp alias
 ```
 
-This shows every setting in your Git configuration that starts with `alias`.
-⚡ With a few aliases, you’ll save keystrokes and speed up your daily Git workflow.
-
 ---
 
-## 📌 Extended Git Alias Set
+## 🛠️ Creating Aliases
 
-### 🔧 Add with `git config`
-
-```bash
-# Starter set (already included)
-git config --global alias.st status
-git config --global alias.br branch
-git config --global alias.co checkout
-git config --global alias.cm "commit -m"
-git config --global alias.ca "commit -am"
-git config --global alias.lg "log --oneline --graph --all --decorate"
-git config --global alias.df diff
-git config --global alias.undo "reset --soft HEAD~1"
-git config --global alias.unstage "reset HEAD --"
-
-# Rebase helpers
-git config --global alias.rb rebase
-git config --global alias.rbi "rebase -i"
-git config --global alias.rbc "rebase --continue"
-git config --global alias.rba "rebase --abort"
-
-# Stash helpers
-git config --global alias.ss stash
-git config --global alias.ssp "stash pop"
-git config --global alias.ssl "stash list"
-git config --global alias.ssa "stash apply"
-
-# Cherry-pick / Merge
-git config --global alias.cp cherry-pick
-git config --global alias.mg merge
-git config --global alias.mga "merge --abort"
-
-# Cleanup
-git config --global alias.clean "!git clean -fd && git reset --hard"
-git config --global alias.prune "fetch --prune"
-
-# Show info
-git config --global alias.last "log -1 HEAD"
-git config --global alias.who "shortlog -sne"
-git config --global alias.lg log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-
+### Method 1: Command Line (Quick)
+```bash title="Terminal"
+git config --global alias.<shortcut> "<command>"
 ```
 
----
+**Examples:**
+```bash
+git config --global alias.st "status"
+git config --global alias.br "branch"
+git config --global alias.co "checkout"
+```
 
-### 📌 Or paste into `~/.gitconfig`
+### Method 2: Edit Config File (Comprehensive)
+Open `~/.gitconfig` and add under `[alias]` section:
 
-```ini
+```ini title="~/.gitconfig"
 [alias]
-  # Starter
   st = status
   br = branch
   co = checkout
   cm = commit -m
-  ca = commit -am
-  lg = log --oneline --graph --all --decorate
-  df = diff
-  undo = reset --soft HEAD~1
-  unstage = reset HEAD --
+```
 
-  # Rebase
+---
+
+## 🚀 Essential Alias Collection
+
+### 🔍 Basic Operations
+```bash
+git config --global alias.st "status"
+git config --global alias.br "branch"
+git config --global alias.co "checkout"
+git config --global alias.ci "commit"
+git config --global alias.cm "commit -m"
+git config --global alias.ca "commit --amend"
+git config --global alias.cane "commit --amend --no-edit"
+```
+
+### 📊 Enhanced Viewing
+```bash
+git config --global alias.lo "log --oneline"
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git config --global alias.ll "log --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(blue)%an%Creset'"
+```
+
+### 🔄 Branch Management
+```bash
+git config --global alias.cob "checkout -b"
+git config --global alias.bm "branch --merged"
+git config --global alias.bnm "branch --no-merged"
+git config --global alias.bd "branch -d"
+git config --global alias.bD "branch -D"
+```
+
+### 📁 File Operations
+```bash
+git config --global alias.a "add"
+git config --global alias.aa "add --all"
+git config --global alias.ap "add --patch"
+git config --global alias.d "diff"
+git config --global alias.ds "diff --staged"
+git config --global alias.dc "diff --cached"
+```
+
+---
+
+## ⚡ Power User Aliases
+
+### 🔄 Advanced Workflow
+```bash
+# Rebase operations
+git config --global alias.rb "rebase"
+git config --global alias.rbi "rebase -i"
+git config --global alias.rbc "rebase --continue"
+git config --global alias.rba "rebase --abort"
+
+# Stash management
+git config --global alias.ss "stash"
+git config --global alias.ssp "stash pop"
+git config --global alias.ssl "stash list"
+git config --global alias.ssa "stash apply"
+
+# Merge operations
+git config --global alias.mg "merge"
+git git config --global alias.mga "merge --abort"
+git config --global alias.mc "merge --continue"
+```
+
+### 🧹 Cleanup & Maintenance
+```bash
+# Reset operations
+git config --global alias.undo "reset --soft HEAD~1"
+git config --global alias.unstage "reset HEAD --"
+git config --global alias.uncommit "reset --soft HEAD^"
+
+# Cleanup commands
+git config --global alias.cleanup "!git clean -fd && git reset --hard"
+git config --global alias.prune "fetch --prune"
+git config --global alias.gc "gc --aggressive"
+```
+
+### 🔍 Information & Debugging
+```bash
+git config --global alias.last "log -1 HEAD"
+git config --global alias.who "shortlog -sne"
+git config --global alias.stats "diff --stat"
+git config --global alias.changed "diff --name-only"
+git config --global alias.contributors "shortlog -sn --no-merges"
+```
+
+---
+
+## 📋 Complete Alias Set for Config File
+
+For a comprehensive setup, add this to your `~/.gitconfig`:
+
+```ini title="~/.gitconfig"
+[alias]
+  # === Basic Operations ===
+  st = status
+  br = branch
+  co = checkout
+  ci = commit
+  cm = commit -m
+  ca = commit --amend
+  cane = commit --amend --no-edit
+  
+  # === Enhanced Viewing ===
+  lo = log --oneline
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  ll = log --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(blue)%an%Creset'
+  lp = log --patch
+  
+  # === Branch Management ===
+  cob = checkout -b
+  bm = branch --merged
+  bnm = branch --no-merged
+  bd = branch -d
+  bD = branch -D
+  
+  # === File Operations ===
+  a = add
+  aa = add --all
+  ap = add --patch
+  d = diff
+  ds = diff --staged
+  dc = diff --cached
+  
+  # === Advanced Workflow ===
   rb = rebase
   rbi = rebase -i
   rbc = rebase --continue
   rba = rebase --abort
-
-  # Stash
   ss = stash
   ssp = stash pop
   ssl = stash list
   ssa = stash apply
-
-  # Cherry-pick / Merge
-  cp = cherry-pick
   mg = merge
   mga = merge --abort
-
-  # Cleanup
-  clean = !git clean -fd && git reset --hard
+  mc = merge --continue
+  
+  # === Cleanup & Maintenance ===
+  undo = reset --soft HEAD~1
+  unstage = reset HEAD --
+  uncommit = reset --soft HEAD^
+  cleanup = !git clean -fd && git reset --hard
   prune = fetch --prune
-
-  # Show info
+  
+  # === Information & Debugging ===
   last = log -1 HEAD
   who = shortlog -sne
-
+  stats = diff --stat
+  changed = diff --name-only
+  contributors = shortlog -sn --no-merges
+  aliases = !git config --get-regexp alias
 ```
 
 ---
 
-## 🚀 Example Usage
+## 🎯 Practical Usage Examples
 
+### Daily Development Workflow
 ```bash
-git rb main      # rebase current branch on main
-git rbi HEAD~3   # interactive rebase last 3 commits
-git ss           # stash changes
-git ssp          # apply & drop last stash
-git cp abc123    # cherry-pick commit abc123
-git clean        # wipe untracked files + reset
-git prune        # remove stale remote branches
-git last         # show last commit
-git who          # show contributors
+# Start new feature
+git cob feature/user-auth
+git aa
+git cm "Add user authentication"
+
+# Quick fixes
+git cane                    # Amend without editing
+git ca -m "Better message" # Amend with new message
+
+# Review changes
+git lg -10                 # Graph view of recent commits
+git ds                     # See staged changes
+```
+
+### Branch Management
+```bash
+# Clean up branches
+git bm                     # See merged branches (safe to delete)
+git bnm                    # See unmerged branches
+git bd feature/old-branch  # Delete merged branch
+
+# Interactive rebase
+git rbi HEAD~3             # Rebase last 3 commits
+```
+
+### Maintenance Tasks
+```bash
+# Clean working directory
+git cleanup                # Reset and clean untracked files
+git prune                  # Remove stale remote references
+
+# Get information
+git last                   # Show most recent commit
+git who                    # See contributor statistics
+git aliases                # List all configured aliases
 ```
 
 ---
 
-⚡ With this setup, you basically get a **Git power toolkit**.
+## 💡 Pro Tips
+
+### 1. **Start Small**
+Begin with 5-10 essential aliases and gradually add more as needed.
+
+### 2. **Use Memorable Names**
+Choose aliases that make sense to you:
+- `st` for status
+- `co` for checkout  
+- `br` for branch
+- `lg` for log graph
+
+### 3. **Test Aliases**
+After creating an alias, test it in a safe repository first.
+
+### 4. **Share Your Setup**
+Keep your `.gitconfig` in version control to sync across machines.
+
+### 5. **Combine with Shell Aliases**
+For even faster workflows, create shell aliases:
+```bash
+# Add to .bashrc or .zshrc
+alias g="git"
+alias gst="git st"
+alias gco="git co"
+```
+
+---
+
+## 🆘 Troubleshooting
+
+### Alias Not Working?
+1. **Check spelling** - Verify alias name and command
+2. **Verify scope** - Use `--global` for user-wide aliases
+3. **Restart terminal** - Some changes require new terminal session
+
+### View All Aliases
+```bash
+git config --get-regexp alias
+```
+
+### Remove an Alias
+```bash
+git config --global --unset alias.<name>
+```
+
+### Edit Aliases
+```bash
+git config --global -e  # Opens config in editor
+```
+
+---
+
+## 🚀 Next Steps
+
+1. **Start** with basic status, branch, and commit aliases
+2. **Add** log and diff aliases for better visualization
+3. **Incorporate** advanced workflow aliases as needed
+4. **Customize** further based on your specific workflow
+
+With these aliases, you'll transform Git from a verbose command-line tool into a personalized productivity powerhouse!
+
+---
+
+**💬 Tip**: The Git Configuration Bootstrap Script can automatically set up these aliases and more. Check out the [Git Bootstrap Scripts](/docs/github-besics/04-git-config-bootstrap.md) guide for one-click setup.
