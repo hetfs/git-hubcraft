@@ -336,7 +336,7 @@ configure_aliases() {
   log_info "Setting up comprehensive Git aliases..."
 
   # Short aliases for frequent commands
-  git_config --global alias.a "add"
+  git_config --global alias.a "add ."
   git_config --global alias.aa "add --all"
   git_config --global alias.ap "add --patch"
   git_config --global alias.au "add --update"
