@@ -646,6 +646,6 @@ trap 'handle_error ${LINENO} "$BASH_COMMAND" $?' ERR
 
 # --- Script entry point ---
 # Check if script is being executed directly or sourced
-if [[ "${BASH_SOURCE[0]}" == "$0" ]] || [[ "${#BASH_SOURCE[@]}" -eq 0 ]]; then
+if [[ "${BASH_SOURCE[0]:-}" == "$0" ]]; then
   main "$@"
 fi
